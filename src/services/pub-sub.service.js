@@ -6,20 +6,20 @@ export function BehaviorSubject(initialValue, isAsync) {
 
     const getValue = function () {
         return _value;
-    }
+    };
 
     const subscribe = function (onNext, onError, onComplete) {
         const observer = new Observer(onNext, onError, onComplete, _isAsync);
         _observers.push(observer);
         onNext(_value);
         return new Subscription(observer);
-    }
+    };
 
     const next = function (value) {
         _value = value;
         _observers = _observers.filter(o => !o.isUnsubscribed);
         _observers.forEach(o => o.onNext(value));
-    }
+    };
 
     const complete = function () {
         _observers.forEach(o => {
@@ -29,7 +29,7 @@ export function BehaviorSubject(initialValue, isAsync) {
             }
         });
         _observers = [];
-    }
+    };
 
     const error = function (err) {
         _observers.forEach(o => {
@@ -39,7 +39,7 @@ export function BehaviorSubject(initialValue, isAsync) {
             }
         });
         _observers = [];
-    }
+    };
 
     return { next, error, complete, subscribe, getValue };
 }
